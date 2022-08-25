@@ -3,12 +3,17 @@ h1 {
   font-size: 30px;
   font-weight: 400;
   line-height: 28px;
+  margin-top: 10px;
 }
 body {
   background-color: #dbd8e3;
 }
 a {
   color: #878787;
+}
+ul {
+  list-style: none;
+  padding-left: 0;
 }
 .city {
   font-family: "DynaPuff", cursive;
