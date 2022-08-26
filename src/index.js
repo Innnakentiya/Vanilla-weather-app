@@ -1,3 +1,28 @@
+//set date
+let now = new Date();
+let date = now.getDate();
+let days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+let day = days[now.getDay()];
+let months = [
+  "JANUARY",
+  "FEBRUARY",
+  "MARCH",
+  "APRIL",
+  "MAY",
+  "JUNE",
+  "JULY",
+  "AUGUST",
+  "SEPTEMBER",
+  "OCTOBER",
+  "NOVEMBER",
+  "DECEMBER",
+];
+let month = months[now.getMonth()];
+let dayDate = document.querySelector(".date");
+dayDate.innerHTML = ` ${month} ${date}`;
+let dayElement = document.querySelector(".day");
+dayElement.innerHTML = ` ${day}`;
+
 function displayTemperature(response) {
   let temperatureInput = document.querySelector("#temperature-input");
   let temperatureMin = Math.round(response.data.main.temp_min);
@@ -32,7 +57,7 @@ function displayTemperature(response) {
     document.querySelector("#icon").setAttribute("src", `src/icons/rain.svg`);
   } else if (iconElementAPI === "11d") {
     document.querySelector("#icon").setAttribute("src", `src/icons/rain.svg`);
-  } else if (iconElement === "13d") {
+  } else if (iconElementAPI === "13d") {
     document.querySelector("#icon").setAttribute("src", `src/icons/snow.svg`);
   } else if (iconElementAPI === "50d")
     document.querySelector("#icon").setAttribute("src", `src/icons/snow.svg`);
