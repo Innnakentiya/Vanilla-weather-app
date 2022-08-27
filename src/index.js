@@ -23,6 +23,7 @@ dayDate.innerHTML = ` ${month} ${date}`;
 let dayElement = document.querySelector(".day");
 dayElement.innerHTML = ` ${day}`;
 
+//
 function displayTemperature(response) {
   let temperatureInput = document.querySelector("#temperature-input");
   let temperatureMin = Math.round(response.data.main.temp_min);
@@ -61,9 +62,40 @@ function displayTemperature(response) {
     document.querySelector("#icon").setAttribute("src", `src/icons/snow.svg`);
   } else if (iconElementAPI === "50d")
     document.querySelector("#icon").setAttribute("src", `src/icons/snow.svg`);
+  if (iconElementAPI === "01d" || iconElementAPI === "01n") {
+    document.querySelector("#icon").setAttribute("src", `src/icons/sun.svg`);
+  } else if (iconElementAPI === "02d" || iconElementAPI === "02n") {
+    document.querySelector("#icon").setAttribute("src", `src/icons/cloudy.svg`);
+  } else if (iconElementAPI === "03d" || iconElementAPI === "03n") {
+    document.querySelector("#icon").setAttribute("src", `src/icons/cloudy.svg`);
+  } else if (iconElementAPI === "04d" || iconElementAPI === "04n") {
+    document.querySelector("#icon").setAttribute("src", `src/icons/cloudy.svg`);
+  } else if (iconElementAPI === "09d" || iconElementAPI === "09n") {
+    document.querySelector("#icon").setAttribute("src", `src/icons/rain.svg`);
+  } else if (iconElementAPI === "10d" || iconElementAPI === "10n") {
+    document.querySelector("#icon").setAttribute("src", `src/icons/rain.svg`);
+  } else if (iconElementAPI === "11d" || iconElementAPI === "11n") {
+    document.querySelector("#icon").setAttribute("src", `src/icons/rain.svg`);
+  } else if (iconElementAPI === "13d" || iconElementAPI === "13n") {
+    document.querySelector("#icon").setAttribute("src", `src/icons/snow.svg`);
+  } else if (iconElementAPI === "50d" || iconElementAPI === "50n") {
+    document.querySelector("#icon").setAttribute("src", `src/icons/snow.svg`);
+  }
+}
+//
+
+function search(city) {
+  let apiKey = "1d69840c0c590c7b98248b4102610f33";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  console.log(apiUrl);
+  axios.get(apiUrl).then(displayTemperature);
 }
 
-let apiKey = "1d69840c0c590c7b98248b4102610f33";
-let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Lviv&appid=${apiKey}&units=metric`;
-console.log(apiUrl);
-axios.get(apiUrl).then(displayTemperature);
+function handleSubmit(event) {
+  event.preventDefault();
+  let cityInputElement = document.querySelector("#city-input");
+  search(cityInputElement.value);
+}
+
+let form = document.querySelector("#search-form");
+form.addEventListener("submit", handleSubmit);
