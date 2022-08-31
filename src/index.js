@@ -1,7 +1,3 @@
-//set date
-let cArrayMin = new Array();
-let cArrayMax = new Array();
-
 let now = new Date();
 let date = now.getDate();
 let days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -27,34 +23,56 @@ let dayElement = document.querySelector("#day");
 dayElement.innerHTML = ` ${day}`;
 
 //
-
-function displayForecast(response) {
-  let dailyForecast = response.data.daily;
-  console.log(dailyForecast);
-
-  let maxTempForecast = document.getElementsByClassName(`max-tamp`);
-  let minTempForecast = document.getElementsByClassName(`min-temp`);
-
-  let iconForecast = document.getElementsByClassName(`weather-icon`);
-  let dayForecast = document.getElementsByClassName(`day`);
-
-  let avDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  for (let i = 1; i <= 5; i++) {
-    date = new Date(dailyForecast[i].dt * 1000);
-    dayForecast[i - 1].innerHTML = avDays[date.getDay()];
-    maxTempForecast[i - 1].innerHTML = Math.round(dailyForecast[i].temp.max);
-    cArrayMax[i - 1] = Math.round(dailyForecast[i].temp.max);
-
-    minTempForecast[i - 1].innerHTML = Math.round(dailyForecast[i].temp.min);
-    cArrayMin[i - 1] = Math.round(dailyForecast[i].temp.min);
-
-    iconForecast[
-      i - 1
-    ].src = `src/icons/${response.data.daily[i].weather[0].icon}.svg`;
-    iconForecast[i - 1].alt = response.data.daily[i].weather[0].description;
-  }
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  return days[day];
 }
 
+function displayForecast(response) {
+  let forecast = response.data.daily;
+  console.log(forecast);
+
+  let forecastElement = document.querySelector("#forecast");
+
+  let forecastHTML = `<div class="row">`;
+  forecast.forEach(function (forecastDay, index) {
+    if (index < 6) {
+      forecastHTML =
+        forecastHTML +
+        `<div class="col">
+                <div class="day" id="day">${formatDay(forecastDay.dt)}</div>
+                <div class="date" id="date"></div>
+                <img
+                  class="weather-icon"
+                  src="http://openweathermap.org/img/wn/${
+                    forecastDay.weather[0].icon
+                  }@2x.png"
+                  alt="Weather Icon"
+                  id="icon"
+                  width="70"
+                />
+                <div
+                  class="temperature-description"
+                  id="temperature-description"
+                >
+                  Sunny
+                </div>
+                <div class="temperature" id="temperature-input">
+                  <span class="min-temp"> ${Math.round(
+                    forecastDay.temp.min
+                  )}℃ /</span
+                  ><span class="max-temp"> ${Math.round(
+                    forecastDay.temp.max
+                  )}℃ </span>
+                </div>`;
+    }
+  });
+
+  forecastHTML = forecastHTML + `</div>`;
+  forecastElement.innerHTML = forecastHTML;
+}
 ///
 
 function getForecast(coordinates) {
