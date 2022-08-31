@@ -7,9 +7,10 @@ h1 {
 }
 body {
   background-color: #dbd8e3;
+  color: #404040;
 }
 a {
-  color: #878787;
+  color: #6e6d6d;
 }
 ul {
   list-style: none;

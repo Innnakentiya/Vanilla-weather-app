@@ -1,4 +1,7 @@
 //set date
+let cArrayMin = new Array();
+let cArrayMax = new Array();
+
 let now = new Date();
 let date = now.getDate();
 let days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -18,12 +21,50 @@ let months = [
   "DECEMBER",
 ];
 let month = months[now.getMonth()];
-let dayDate = document.querySelector(".date");
+let dayDate = document.querySelector("#date");
 dayDate.innerHTML = ` ${month} ${date}`;
-let dayElement = document.querySelector(".day");
+let dayElement = document.querySelector("#day");
 dayElement.innerHTML = ` ${day}`;
 
 //
+
+function displayForecast(response) {
+  let dailyForecast = response.data.daily;
+  console.log(dailyForecast);
+
+  let maxTempForecast = document.getElementsByClassName(`max-tamp`);
+  let minTempForecast = document.getElementsByClassName(`min-temp`);
+
+  let iconForecast = document.getElementsByClassName(`weather-icon`);
+  let dayForecast = document.getElementsByClassName(`day`);
+
+  let avDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  for (let i = 1; i <= 5; i++) {
+    date = new Date(dailyForecast[i].dt * 1000);
+    dayForecast[i - 1].innerHTML = avDays[date.getDay()];
+    maxTempForecast[i - 1].innerHTML = Math.round(dailyForecast[i].temp.max);
+    cArrayMax[i - 1] = Math.round(dailyForecast[i].temp.max);
+
+    minTempForecast[i - 1].innerHTML = Math.round(dailyForecast[i].temp.min);
+    cArrayMin[i - 1] = Math.round(dailyForecast[i].temp.min);
+
+    iconForecast[
+      i - 1
+    ].src = `src/icons/${response.data.daily[i].weather[0].icon}.svg`;
+    iconForecast[i - 1].alt = response.data.daily[i].weather[0].description;
+  }
+}
+
+///
+
+function getForecast(coordinates) {
+  console.log(coordinates);
+  let apiKey = "1d69840c0c590c7b98248b4102610f33";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
+  console.log(apiUrl);
+  axios.get(apiUrl).then(displayForecast);
+}
+
 function displayTemperature(response) {
   let temperatureInput = document.querySelector("#temperature-input");
   let temperatureMin = Math.round(response.data.main.temp_min);
@@ -81,6 +122,7 @@ function displayTemperature(response) {
   } else if (iconElementAPI === "50d" || iconElementAPI === "50n") {
     document.querySelector("#icon").setAttribute("src", `src/icons/snow.svg`);
   }
+  getForecast(response.data.coord);
 }
 //
 
@@ -99,3 +141,5 @@ function handleSubmit(event) {
 
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmit);
+
+search("Madrid");
