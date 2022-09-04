@@ -6,6 +6,7 @@ h1 {
   margin-top: 10px;
 }
 body {
+  background: url(sky.jpg);
   background-color: #dbd8e3;
   color: #404040;
 }
