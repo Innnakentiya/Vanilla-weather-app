@@ -1,28 +1,24 @@
-let now = new Date();
-let date = now.getDate();
-let days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-let day = days[now.getDay()];
-let months = [
-  "JANUARY",
-  "FEBRUARY",
-  "MARCH",
-  "APRIL",
-  "MAY",
-  "JUNE",
-  "JULY",
-  "AUGUST",
-  "SEPTEMBER",
-  "OCTOBER",
-  "NOVEMBER",
-  "DECEMBER",
-];
-let month = months[now.getMonth()];
-let dayDate = document.querySelector("#date");
-dayDate.innerHTML = ` ${month} ${date}`;
-let dayElement = document.querySelector("#day");
-dayElement.innerHTML = ` ${day}`;
+function formatForecastDate(timestamp) {
+  let forecastDate = new Date(timestamp * 1000);
+  let forecastMonth = forecastDate.getMonth();
+  let forecastMonthDay = forecastDate.getDate();
+  let monthsForecast = [
+    "JANUARY",
+    "FEBRUARY",
+    "MARCH",
+    "APRIL",
+    "MAY",
+    "JUNE",
+    "JULY",
+    "AUGUST",
+    "SEPTEMBER",
+    "OCTOBER",
+    "NOVEMBER",
+    "DECEMBER",
+  ];
+  return `${monthsForecast[forecastMonth]} ${forecastMonthDay}`;
+}
 
-//
 function formatDay(timestamp) {
   let date = new Date(timestamp * 1000);
   let day = date.getDay();
@@ -30,25 +26,45 @@ function formatDay(timestamp) {
   return days[day];
 }
 
+function getIcon(iconElementAPI) {
+  if (iconElementAPI === "01d") {
+    return `src/icons/sun.svg`;
+  } else if (iconElementAPI === "02d") {
+    return `src/icons/cloudy.svg`;
+  } else if (iconElementAPI === "03d") {
+    return `src/icons/cloudy.svg`;
+  } else if (iconElementAPI === "04d") {
+    return `src/icons/cloudy.svg`;
+  } else if (iconElementAPI === "09d") {
+    return `src/icons/rain.svg`;
+  } else if (iconElementAPI === "10d") {
+    return `src/icons/rain.svg`;
+  } else if (iconElementAPI === "11d") {
+    return `src/icons/rain.svg`;
+  } else if (iconElementAPI === "13d") {
+    return `src/icons/snow.svg`;
+  } else if (iconElementAPI === "50d") {
+    return `src/icons/foggy.svg`;
+  }
+}
+
 function displayForecast(response) {
   let forecast = response.data.daily;
   console.log(forecast);
-
   let forecastElement = document.querySelector("#forecast");
-
   let forecastHTML = `<div class="row">`;
   forecast.forEach(function (forecastDay, index) {
-    if (index < 6) {
+    if (index < 5) {
       forecastHTML =
         forecastHTML +
         `<div class="col">
                 <div class="day" id="day">${formatDay(forecastDay.dt)}</div>
-                <div class="date" id="date"></div>
+                <div class="date" id="date">${formatForecastDate(
+                  forecastDay.dt
+                )}</div>
                 <img
                   class="weather-icon"
-                  src="http://openweathermap.org/img/wn/${
-                    forecastDay.weather[0].icon
-                  }@2x.png"
+                  src="${getIcon(forecastDay.weather[0].icon)}"
                   alt="Weather Icon"
                   id="icon"
                   width="70"
@@ -57,7 +73,7 @@ function displayForecast(response) {
                   class="temperature-description"
                   id="temperature-description"
                 >
-                  Sunny
+                  ${forecastDay.weather[0].main}
                 </div>
                 <div class="temperature" id="temperature-input">
                   <span class="min-temp"> ${Math.round(
@@ -66,14 +82,14 @@ function displayForecast(response) {
                   ><span class="max-temp"> ${Math.round(
                     forecastDay.temp.max
                   )}℃ </span>
-                </div>`;
+                </div>
+              </div>`;
     }
   });
 
   forecastHTML = forecastHTML + `</div>`;
   forecastElement.innerHTML = forecastHTML;
 }
-///
 
 function getForecast(coordinates) {
   console.log(coordinates);
@@ -103,46 +119,9 @@ function displayTemperature(response) {
 
   let iconElementAPI = response.data.weather[0].icon;
   iconElement.setAttribute("alt", response.data.weather[0].description);
-  if (iconElementAPI === "01d") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/sun.svg`);
-  } else if (iconElementAPI === "02d") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/cloudy.svg`);
-  } else if (iconElementAPI === "03d") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/cloudy.svg`);
-  } else if (iconElementAPI === "04d") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/cloudy.svg`);
-  } else if (iconElementAPI === "09d") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/rain.svg`);
-  } else if (iconElementAPI === "10d") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/rain.svg`);
-  } else if (iconElementAPI === "11d") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/rain.svg`);
-  } else if (iconElementAPI === "13d") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/snow.svg`);
-  } else if (iconElementAPI === "50d")
-    document.querySelector("#icon").setAttribute("src", `src/icons/snow.svg`);
-  if (iconElementAPI === "01d" || iconElementAPI === "01n") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/sun.svg`);
-  } else if (iconElementAPI === "02d" || iconElementAPI === "02n") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/cloudy.svg`);
-  } else if (iconElementAPI === "03d" || iconElementAPI === "03n") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/cloudy.svg`);
-  } else if (iconElementAPI === "04d" || iconElementAPI === "04n") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/cloudy.svg`);
-  } else if (iconElementAPI === "09d" || iconElementAPI === "09n") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/rain.svg`);
-  } else if (iconElementAPI === "10d" || iconElementAPI === "10n") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/rain.svg`);
-  } else if (iconElementAPI === "11d" || iconElementAPI === "11n") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/rain.svg`);
-  } else if (iconElementAPI === "13d" || iconElementAPI === "13n") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/snow.svg`);
-  } else if (iconElementAPI === "50d" || iconElementAPI === "50n") {
-    document.querySelector("#icon").setAttribute("src", `src/icons/snow.svg`);
-  }
+  iconElement.setAttribute("src", getIcon(iconElementAPI));
   getForecast(response.data.coord);
 }
-//
 
 function search(city) {
   let apiKey = "1d69840c0c590c7b98248b4102610f33";
