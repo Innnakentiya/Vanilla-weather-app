@@ -54,7 +54,8 @@ ul {
   color: #878787;
 }
 #humidity,
-#wind {
+#wind,
+#current-temperature {
   font-size: 18px;
   font-weight: 500;
 }

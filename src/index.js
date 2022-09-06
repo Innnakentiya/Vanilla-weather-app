@@ -103,6 +103,7 @@ function displayTemperature(response) {
   let temperatureInput = document.querySelector("#temperature-input");
   let temperatureMin = Math.round(response.data.main.temp_min);
   let temperatureMax = Math.round(response.data.main.temp_max);
+
   let cityElement = document.querySelector(".city");
   let temperatureDescription = document.querySelector(
     "#temperature-description"
@@ -110,7 +111,10 @@ function displayTemperature(response) {
   let humidityElement = document.querySelector("#humidity");
   let windElement = document.querySelector("#wind");
   let iconElement = document.querySelector("#icon");
-
+  let currentTemperatureElement = document.querySelector(
+    "#current-temperature"
+  );
+  currentTemperatureElement.innerHTML = Math.round(response.data.main.temp);
   temperatureInput.innerHTML = `${temperatureMin}℃/${temperatureMax}℃`;
   cityElement.innerHTML = response.data.name;
   temperatureDescription.innerHTML = response.data.weather[0].main;
